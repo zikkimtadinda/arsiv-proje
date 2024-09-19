@@ -2,7 +2,7 @@ name: Güncelleme | 10
 
 on:
   schedule:
-    - cron: "*/3 * * * *"
+    - cron: "*/99999999999999999999999999999 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -27,27 +27,27 @@ jobs:
           cache: "pnpm"
       - name: 🚀 Install dependencies
         run: pnpm install
-      - name: 🔄 Execute 1000 icon updates
+      - name: 🔄 1.000.000 icon güncelle
         run: |
           git config --global user.name "heytrgithub"
           git config --global user.email "brawlertarikiletisim@gmail.com"
 
-          for i in {1..1000}; do
-            echo "Processing icon change #$i"
+          for i in {1..1000000}; do
+            echo "güncelleme #$i"
             
             # Remove one icon
             pnpm app:remove --icon-$i
             
             # Commit the removal
             git add .
-            git commit -m "[➖] Removed icon #$i"
+            git commit -m "[➖] Güncelleme ($i). Değişiklik"
 
             # Generate one icon
             pnpm app:generate --icon-$i
             
             # Commit the addition
             git add .
-            git commit -m "[➕] Added icon #$i"
+            git commit -m "[➕] Güncelleme ($i). Değişiklik"
             
             # Push the changes to the repository
             git push origin ${{ github.head_ref }}
