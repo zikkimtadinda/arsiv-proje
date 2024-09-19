@@ -29,6 +29,9 @@ jobs:
         run: pnpm install
       - name: 🔄 Execute 1000 icon updates
         run: |
+          git config --global user.name "heytrgithub"
+          git config --global user.email "brawlertarikiletisim@gmail.com"
+
           for i in {1..1000}; do
             echo "Processing icon change #$i"
             
