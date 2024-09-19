@@ -1,4 +1,3 @@
-
 name: Güncelleme | 10
 
 on:
@@ -28,21 +27,27 @@ jobs:
           cache: "pnpm"
       - name: 🚀 Install dependencies
         run: pnpm install
-      - name: ✨ Remove icons
-        run: pnpm app:remove
-      - name: ☑️ Commit Changes (removed icons)
+      - name: ✨ Remove 1000 icons
+        run: |
+          for i in {1..1000}; do
+            pnpm app:remove --icon-$i
+          done
+      - name: ☑️ Commit Changes (removed 1000 icons)
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "[➖] Güncelleme"
+          commit_message: "[➖] 1000 icon removed"
           branch: ${{ github.head_ref }}
           commit_user_name: heytrgithub
           commit_user_email: brawlertarikiletisim@gmail.com
-      - name: 🚀 Generate new icons
-        run: pnpm app:generate
-      - name: ☑️ Commit Changes (generated icons)
+      - name: 🚀 Generate 1000 new icons
+        run: |
+          for i in {1..1000}; do
+            pnpm app:generate --icon-$i
+          done
+      - name: ☑️ Commit Changes (generated 1000 new icons)
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "[➕] Güncelleme"
+          commit_message: "[➕] 1000 new icons generated"
           branch: ${{ github.head_ref }}
           commit_user_name: heytrgithub
           commit_user_email: brawlertarikiletisim@gmail.com
