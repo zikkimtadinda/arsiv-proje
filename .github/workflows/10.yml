@@ -1,0 +1,54 @@
+name: Güncelleme | 10
+
+on:
+  schedule:
+    - cron: "*/3 * * * *"
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        node: [18.x]
+    steps:
+      - name: 🧱 Checkout repository
+        uses: actions/checkout@v4
+      - name: 🔩 Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - name: 🔩 Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: "pnpm"
+      - name: 🚀 Install dependencies
+        run: pnpm install
+      - name: 🔄 Execute 1000 icon updates
+        run: |
+          git config --global user.name "heytrgithub"
+          git config --global user.email "brawlertarikiletisim@gmail.com"
+
+          for i in {1..1000}; do
+            echo "Processing icon change #$i"
+            
+            # Remove one icon
+            pnpm app:remove --icon-$i
+            
+            # Commit the removal
+            git add .
+            git commit -m "[➖] Removed icon #$i"
+
+            # Generate one icon
+            pnpm app:generate --icon-$i
+            
+            # Commit the addition
+            git add .
+            git commit -m "[➕] Added icon #$i"
+            
+            # Push the changes to the repository
+            git push origin ${{ github.head_ref }}
+          done
