@@ -1,4 +1,4 @@
-name: Güncelleme | 10
+name: sistem
 
 on:
   workflow_dispatch:
@@ -38,14 +38,14 @@ jobs:
             
             # Commit the removal
             git add .
-            git commit -m "[➖] Güncelleme ($i). Değişiklik"
+            git commit -m "[➖] Güncelleme ($i. Değişiklik)"
 
             # Generate one icon
             pnpm app:generate --icon-$i
             
             # Commit the addition
             git add .
-            git commit -m "[➕] Güncelleme ($i). Değişiklik"
+            git commit -m "[➕] Güncelleme ($i. Değişiklik)"
             
             # Push the changes to the repository
             git push origin ${{ github.head_ref }}
