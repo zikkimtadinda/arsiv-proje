@@ -27,27 +27,25 @@ jobs:
           cache: "pnpm"
       - name: 🚀 Install dependencies
         run: pnpm install
-      - name: ✨ Remove 1000 icons
+      - name: 🔄 Execute 1000 icon updates
         run: |
           for i in {1..1000}; do
+            echo "Processing icon change #$i"
+            
+            # Remove one icon
             pnpm app:remove --icon-$i
-          done
-      - name: ☑️ Commit Changes (removed 1000 icons)
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "[➖] 1000 icon removed"
-          branch: ${{ github.head_ref }}
-          commit_user_name: heytrgithub
-          commit_user_email: brawlertarikiletisim@gmail.com
-      - name: 🚀 Generate 1000 new icons
-        run: |
-          for i in {1..1000}; do
+            
+            # Commit the removal
+            git add .
+            git commit -m "[➖] Removed icon #$i"
+
+            # Generate one icon
             pnpm app:generate --icon-$i
+            
+            # Commit the addition
+            git add .
+            git commit -m "[➕] Added icon #$i"
+            
+            # Push the changes to the repository
+            git push origin ${{ github.head_ref }}
           done
-      - name: ☑️ Commit Changes (generated 1000 new icons)
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "[➕] 1000 new icons generated"
-          branch: ${{ github.head_ref }}
-          commit_user_name: heytrgithub
-          commit_user_email: brawlertarikiletisim@gmail.com
