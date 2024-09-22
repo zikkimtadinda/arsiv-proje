@@ -1,0 +1,53 @@
+name: sistem
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        node: [18.x]
+    steps:
+      - name: 🧱 Checkout repository
+        uses: actions/checkout@v4
+      - name: 🔩 Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - name: 🔩 Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: "pnpm"
+      - name: 🚀 Install dependencies
+        run: pnpm install
+      - name: 🔄 1.000.000 icon güncelle
+        run: |
+          git config --global user.name "heytrgithub"
+          git config --global user.email "brawlertarikiletisim@gmail.com"
+
+          # Her bir işlemde 1000 ikon için toplu commit yap
+          for batch in {1..1000}; do
+            for i in $(seq $((batch*1000-999)) $((batch*1000))); do
+              echo "Güncelleme #$i"
+
+              # Remove one icon
+              pnpm app:remove --icon-$i
+              
+              # Generate one icon
+              pnpm app:generate --icon-$i
+              
+              # Git add changes
+              git add .
+            done
+
+            # Commit changes for the current batch of 1000 icons
+            git commit -m "[🔄] Güncelleme ($((batch*1000)). Değişiklik)"
+            
+            # Push the changes to the repository
+            git push origin ${{ github.head_ref }}
+          done
